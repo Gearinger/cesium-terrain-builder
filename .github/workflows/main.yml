@@ -13,9 +13,6 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
       - name: Install dependencies
         run: |
           sudo apt-get update
@@ -23,15 +20,8 @@ jobs:
 
       - name: Build Cesium Terrain Builder
         run: |
-          mkdir /tmp/ctb-build
-          cd /tmp/ctb-build
-          cmake /usr/local/src/cesium-terrain-builder
-          make -j$(nproc)
-          make install
-          ldconfig
-          apt-get autoremove -y
-          apt-get clean
-          rm -rf /var/lib/apt/lists/partial/* /tmp/* /var/tmp/*
+          mkdir build && cd build && cmake .. && make install
+          ls
 
       - name: Create release
         id: create_release
